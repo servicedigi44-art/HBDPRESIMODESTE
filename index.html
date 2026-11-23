@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anniversaire de Modeste</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Concept : une affiche d'honneur, photo en arche au centre, bande tricolore en tête, bascule de palette. */
+:root{
+  --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --bg:#ffffff;
+  --bg2:#f4eefc;
+  --fg:#23133f;
+  --muted:#5b4d78;
+  --line:#e0d4f3;
+  --c1:#5b24a8;
+  --c2:#ffffff;
+  --c3:#8e5ce0;
+  --on-c1:#ffffff;
+  --ink1:#5b24a8;
+  --ink2:#7a3fd0;
+  color-scheme:light;
+}
+body[data-palette="ci"]{
+  --bg:#ffffff;
+  --bg2:#fff4e6;
+  --fg:#14301f;
+  --muted:#4a5f50;
+  --line:#f1dcc0;
+  --c1:#f77f00;
+  --c2:#ffffff;
+  --c3:#009e60;
+  --on-c1:#14301f;
+  --ink1:#b45300;
+  --ink2:#00794a;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.6;transition:background .3s,color .3s}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.stripe{display:grid;grid-template-columns:1fr 1fr 1fr;height:10px;background:var(--bg)}
+.stripe i{display:block;background:var(--c1)}
+.stripe i:nth-child(2){background:var(--c2);border-block:1px solid var(--line)}
+.stripe i:nth-child(3){background:var(--c3)}
+
+.hero{margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 1.25rem);padding-bottom:3rem;background:var(--bg2);transition:background .3s}
+.hero .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.75rem}
+.switch{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:.25rem;padding:.25rem;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.switch button{font:600 .85rem var(--font-body);padding:.5rem .9rem;border:0;border-radius:999px;background:transparent;color:var(--muted);cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--c1);color:var(--on-c1)}
+button:focus-visible{outline:3px solid var(--ink2);outline-offset:2px}
+
+.portrait{width:min(300px,78vw);aspect-ratio:3/4;border-radius:999px 999px 18px 18px;overflow:hidden;border:6px solid var(--c1);box-shadow:12px 12px 0 var(--c3);background:var(--bg)}
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+
+.eyebrow{font:600 .8rem var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);margin:0}
+h1{margin:0;font-family:var(--font-display);line-height:1.02;text-wrap:balance}
+h1 .hb{display:block;font-weight:500;font-size:clamp(1.6rem,6vw,2.6rem);color:var(--ink1)}
+h1 .nom{display:block;font-weight:800;font-size:clamp(2.4rem,11vw,5.2rem);letter-spacing:-.02em;margin-top:.35rem}
+h1 .nom small{display:block;font-size:.42em;letter-spacing:.08em;color:var(--ink2);font-weight:800;margin-bottom:.1em}
+.role{margin:0;color:var(--muted);max-width:34ch}
+.cta{font:600 1rem var(--font-body);padding:.85rem 1.5rem;border:0;border-radius:12px;background:var(--c1);color:var(--on-c1);cursor:pointer}
+.cta:hover{filter:brightness(1.06)}
+
+section{padding-block:3rem}
+h2{font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,5vw,2.1rem);line-height:1.15;margin:0 0 1rem;color:var(--ink1);text-wrap:balance}
+.msg{max-width:62ch;margin-inline:auto}
+.msg p{margin:0 0 1rem}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem}
+.three>div{min-width:0;padding:1.25rem;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.three h3{margin:0 0 .35rem;font:800 1.25rem var(--font-display);color:var(--ink2)}
+.three p{margin:0;color:var(--muted)}
+.alt{background:var(--bg2);transition:background .3s}
+.pays{text-align:center}
+.pays p{margin:0 auto 1rem;max-width:50ch}
+.sig{font-family:var(--font-display);font-weight:800;font-size:1.25rem;color:var(--ink1)}
+footer{padding-block:1.5rem;text-align:center;color:var(--muted);font-size:.9rem}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:15;max-width:calc(100% - 32px);padding:.6rem 1rem;border-radius:999px;background:var(--c1);color:var(--on-c1);font:600 .9rem var(--font-body);text-align:center;pointer-events:none}
+@media (prefers-reduced-motion:reduce){body,.hero,.alt{transition:none}}
+</style>
+
+<body data-palette="violet">
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="stripe" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="switch" role="group" aria-label="Choisir les couleurs">
+      <button type="button" id="p-violet" aria-pressed="true">Violet et blanc</button>
+      <button type="button" id="p-ci" aria-pressed="false">Orange, blanc, vert</button>
+    </div>
+    <div class="portrait"><img src="photo.jpg" alt="Portrait du Pr Tie Bi Irie Modeste en costume noir à boutons dorés"></div>
+    <p class="eyebrow">23 novembre</p>
+    <h1>
+      <span class="hb">Joyeux anniversaire</span>
+      <span class="nom"><small>Pr TIE BI IRIE</small>MODESTE</span>
+    </h1>
+    <p class="role">Devancier, leader, grand frère. Le combat continue.</p>
+    <button class="cta" type="button" id="fete">Lancer les confettis</button>
+  </div>
+</header>
+
+<section>
+  <div class="wrap msg">
+    <h2>Un mot pour toi, Grand frère</h2>
+    <p>Aujourd'hui, c'est ton jour. Le chemin n'est pas terminé et la lutte continue, mais tu tiens debout, jour après jour.</p>
+    <p>Tu te bats pour un lendemain meilleur, pour des causes nobles, et tu ne lâches pas, même quand la route est longue. Ta persévérance donne du courage à ceux qui marchent derrière toi.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Ce que tu incarnes pour nous</h2>
+    <div class="three">
+      <div><h3>Devancier</h3><p>Tu avances en premier pour ouvrir la voie, et tu continues de marcher.</p></div>
+      <div><h3>Leader</h3><p>Tu guides par l'exemple, avec calme, sérieux et classe.</p></div>
+      <div><h3>Grand frère</h3><p>Tu conseilles, tu soutiens et tu es là quand il faut.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap msg">
+    <h2>Nos vœux pour cette nouvelle année</h2>
+    <p>Que Dieu te garde debout et te donne la santé, la force et la patience pour poursuivre le combat. Que chaque cause juste que tu portes avance, et que les fruits de ta lutte arrivent en leur temps.</p>
+  </div>
+</section>
+
+<section class="alt pays">
+  <div class="wrap">
+    <h2>Fier enfant de Bouaflé</h2>
+    <p>Fierté de sa ville et de toute la Côte d'Ivoire. Le combat continue, et nous marchons avec toi.</p>
+    <p class="sig">Joyeux anniversaire, Pr Modeste !</p>
+  </div>
+</section>
+
+<footer><div class="wrap">De la part de tous ceux qui marchent avec toi.</div></footer>
+
+<audio id="bd" loop preload="auto" src="musique.wav"></audio>
+<div id="hint" hidden>Touche l’écran pour lancer la musique</div>
+<script>
+(function(){
+  var a=document.getElementById('bd'), hint=document.getElementById('hint');
+  var evs=['pointerdown','pointerup','touchend','keydown','click'];
+  function off(){ evs.forEach(function(n){document.removeEventListener(n,onG,true)}); }
+  function ok(){ hint.hidden=true; off(); }
+  function tryPlay(){
+    var p; try{ p=a.play(); }catch(e){ hint.hidden=false; return; }
+    if(p&&p.then) p.then(ok,function(){ hint.hidden=false; });
+  }
+  function onG(){ tryPlay(); }
+  a.addEventListener('playing',ok);
+  evs.forEach(function(n){document.addEventListener(n,onG,true)});
+  a.volume=0.9;
+  tryPlay();
+})();
+</script>
+
+</html>
